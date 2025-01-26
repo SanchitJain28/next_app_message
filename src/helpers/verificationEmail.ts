@@ -1,4 +1,4 @@
-import VerificationEmail from "../../../emails/verificationEmailTemplate";
+import VerificationEmail from "../../emails/verificationEmailTemplate";
 import { resend } from "../lib/resendEmail";
 import ApiResponse from "../types/apiResponse";
 

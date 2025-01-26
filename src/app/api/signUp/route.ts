@@ -1,7 +1,7 @@
-import sendVerificationEmail from "@/app/helpers/verificationEmail";
-import dbConnect from "@/app/lib/dbConnect";
-import UserModel from "@/app/model/User";
-import ApiResponse from "@/app/types/apiResponse";
+import sendVerificationEmail from "@/helpers/verificationEmail";
+import dbConnect from "@/lib/dbConnect";
+import UserModel from "@/model/User";
+import ApiResponse from "@/types/apiResponse";
 import bcrypt from 'bcryptjs'
 
 export async function POST(request: Request) {
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
             email: email
         })
         const verifyCode=Math.floor(100000 +Math.random()*900000).toString()
-        //if user with email and is verified is found ,it will check the verify status of the user RUN
+        //if user with email and is verified is found ,it will check the verify status of the user, RUN
         if (existingUserwithemail) {
             //if email is verfied the function will take EXIT
             if(existingUserwithemail.isVerified){
