@@ -3,7 +3,6 @@ import UserModel from "@/model/User"
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from 'bcryptjs'
 import { NextAuthOptions } from "next-auth"
-import { use } from "react"
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -49,7 +48,7 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async session({ session,  token }) {
             if(token){
-                session.user._id=token._id,
+                session.user._id=token._id
                 session.user.isVerified=token.isVerfied
                 session.user.isAcceptingMessages=token.isAcceptingMessages
                 session.user.username=token.username

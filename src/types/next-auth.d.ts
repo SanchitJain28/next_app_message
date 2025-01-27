@@ -8,6 +8,7 @@ declare module 'next-auth' {
         isVerfied?: boolean
         username?: string
     }
+    //YOU CAN SEE THIS NEXTAUTH DOCUMENTATION
     interface Session {
         user: {
             _id?: string
