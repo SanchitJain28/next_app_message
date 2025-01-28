@@ -3,7 +3,10 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from 'bcryptjs'
 
+//in Nextjs rest api works like folders,for ex:- this given file is http://localhost:3000/api/signUp,it is decided by folder name
+//THis is how you write a request by putting function name as POST,GET,UPDATE,DELETE
 export async function POST(request: Request) {
+    //First connect the database,in next js we have to connect database everytime we make a request because it works on edge 
     await dbConnect()
     try {
         //takes paramters from the request
@@ -42,7 +45,7 @@ export async function POST(request: Request) {
         }
         //if user is not found,IT WILL CREATE A NEW USER
         else {
-            const hashedPassword=bcrypt.hash(password,10)
+            const hashedPassword=await bcrypt.hash(password,10)
             const expiryDate =new Date()
             expiryDate.setHours(expiryDate.getHours()+1)
             const userData = new UserModel({
@@ -60,8 +63,8 @@ export async function POST(request: Request) {
         //after saving the user,it will send verification email
         //send verification email
         const SendEmail=await sendVerificationEmail(
-            username,
             email,
+            username,
             verifyCode
         )
         //if email was not send succesfully,program will exit after giving a message
@@ -73,6 +76,7 @@ export async function POST(request: Request) {
         }
         //FINALLY email verification is sent .PROGRAM WILL FINALLY TAKE EXIT
         return Response.json({
+            email:SendEmail,
             success:true,
             message:"Registered Succesfully.Please verify your email"
         },{status:201})
@@ -80,7 +84,8 @@ export async function POST(request: Request) {
         console.error("Error signing up the user", error)
         return Response.json({
             success: false,
-            message: "error signing up the user"
+            message: "error signing up the user",
+            error:error
         },
             {
                 status: 500
