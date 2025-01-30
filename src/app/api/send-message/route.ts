@@ -5,7 +5,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import mongoose from "mongoose";
 import { Message } from "@/model/User";
 
-export default async function POST(request:Request){
+export  async function POST(request:Request){
      await dbConnect()
         try {
             const {inputMessage,username}=await request.json()
