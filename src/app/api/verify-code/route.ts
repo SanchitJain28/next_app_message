@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         else if (!isValidcode) {
             return Response.json({
                 success: false,
-                message: "Invalid code"
+                message: `InValidCode code = ${verifyCodeInput}`
             }, { status: 500 })
         }
         else {

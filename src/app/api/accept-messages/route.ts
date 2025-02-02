@@ -5,18 +5,25 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import { User } from "next-auth";
 
 export async function POST(request: Request) {
+    //connecting the Database
     await dbConnect()
+    //getting the saved session from the ui.I think
     const session = await getServerSession(authOptions)
+    //gets the user from the session
     const user = session?.user
+    //if session is not found or user is not found from the session give Response:FALSE
     if (!session || !session.user) {
         return Response.json({
             success: false,
             message: "User not found,Please log in"
         }, { status: 401 })
     }
+    //gets the user Id from the user
     const userId = user?._id
+    //gets the acceptingMessage from the body of the request
     const { acceptingMessage } = await request.json()
     try {
+        //find user by id and updates the isAcceptingMessage status
         const findUserByID = await UserModel.findByIdAndUpdate(
             userId,
             { isAcceptingMessage: acceptingMessage },
@@ -26,12 +33,14 @@ export async function POST(request: Request) {
         // const findUserById=await UserModel.findOne({_id:userId});
         // findUserById.isAcceptingMessage=acceptingMessage;
         // await findUserById.save()
+        //if user is not found in the database give Response:False
         if (!findUserByID) {
             return Response.json({
                 success: false,
                 message: "Error updating status"
             }, { status: 401 })
         }
+        //else give Response:true
         return Response.json({
             success: true,
             message: "Status updated",
