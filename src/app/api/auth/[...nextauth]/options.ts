@@ -7,28 +7,23 @@ import { NextAuthOptions } from "next-auth"
 //make a object authOptions as type NextauthOptions,you can see in the nextJs Docuumentation
 export const authOptions: NextAuthOptions = {
     providers: [
-        //You will get the provider in NEctjs documentation
+        //You will get the provider in NExtjs documentation
         CredentialsProvider({
-            // The name to display on the sign in form (e.g. 'Sign in with...')
-            id: 'sign-In',
-            name: 'sign-In',
-            // The credentials is used to generate a suitable form on the sign in page.
-            // You can specify whatever fields you are expecting to be submitted.
-            // e.g. domain, username, password, 2FA token, etc.
-            // You can pass any HTML attribute to the <input> tag through the object.
+            id: 'credentials',
+            name: 'Credentials',
             credentials: {
                 user_identifier: { label: "Username", type: "text", placeholder: "enter your username" },
                 password: { label: "Password", type: "password" }
             },
             //we have to call in authorize function to make the login happpen
             async authorize(credentials: any, req): Promise<any> {
-                //you know this logic as you have done the same in express backend
+                console.log("Authorize function called with:", credentials);
                 await dbConnect()
                 try {
                     const user = await UserModel.findOne({
                         $or: [
-                            { email: credentials.identifier.user_identifier },
-                            { username: credentials.identifier.user_identifier }
+                            { email: credentials.user_identifier },
+                            { username: credentials.user_identifier }
                         ]
                     })
                     if (!user) {
@@ -45,7 +40,6 @@ export const authOptions: NextAuthOptions = {
                 } catch (error: any) {
                     throw new Error(error)
                 }
-
             }
         })
     ],
@@ -80,5 +74,5 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt'
     },
-    secret: process.env.NEXTAUTH_SECRET
+    secret:process.env.NEXTAUTH_SECRET
 }

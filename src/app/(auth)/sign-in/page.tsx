@@ -4,9 +4,6 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import React, { useState } from 'react'
 import { useRouter } from "next/navigation"
-import { signUpSchemma } from "@/Schemmas/signUpSchemma"
-import axios, { AxiosError } from 'axios'
-import ApiResponse from "@/types/apiResponse"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -18,48 +15,31 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { signInSchemma } from "@/Schemmas/signInSchemma"
 import { useToast } from "@/hooks/use-toast"
+import axios, { AxiosError } from "axios"
+import ApiResponse from "@/types/apiResponse"
 
 const page = () => {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
-  const [signInResponse, setSignInResponse] = useState("");
 
+  const { data: session, status } = useSession()
 
   const handleSubmit = async (data: z.infer<typeof signInSchemma>) => {
-    console.log("Submitting Data:", data);
+    console.log(data)
     try {
-      const response = await signIn("credentials", {
-        redirect: false, // Important to prevent automatic redirection
-        callbackUrl: "http://localhost:3000",
-        user_identifier: data.identifier, // Ensure this field matches what your API expects
-        password: data.password,
-      });
-      
-      console.log("SignIn Response:", response);
-      // setResponse(response)
-  
-      // if (response?.error) {
-      //   toast({
-      //     title: "Login Failed",
-      //     description: response.error,
-      //     variant: "destructive",
-      //   });
-      // } else {
-      //   toast({
-      //     title: "Login Successful",
-      //     description: "Redirecting...",
-      //   });
-      //   router.push(response?.url || "/");
-      // }
+      //the problem was of id ,you have to add 'sign-In' as same id in the server side credentials provider 
+      const response = await axios.post('/api/signIn', data)
+      console.log(response.data)
     } catch (error) {
-      console.error("SignIn Error:", error);
+      const axiosError=error as AxiosError<ApiResponse>
+      let errorMessage=axiosError.response?.data.message ?? "Unexpected error occured"
       toast({
         title: "An error occurred",
-        description: "Please try again later.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
@@ -70,7 +50,7 @@ const page = () => {
   const form = useForm<z.infer<typeof signInSchemma>>({
     resolver: zodResolver(signInSchemma),
     defaultValues: {
-      identifier: "",
+      user_identifier: "",
       password: ""
     }
   })
@@ -82,7 +62,7 @@ const page = () => {
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="identifier"
+            name="user_identifier"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
@@ -93,7 +73,7 @@ const page = () => {
               </FormItem>
             )}
           />
-           <FormField
+          <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -106,9 +86,11 @@ const page = () => {
               </FormItem>
             )}
           />
-          
 
-          <Button type="submit">Submit</Button>
+
+          <Button type="submit" onClick={(e) => {
+
+          }}>Submit</Button>
         </form>
       </Form>
     </div>

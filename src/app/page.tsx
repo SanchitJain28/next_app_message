@@ -12,6 +12,8 @@ export default function Home() {
         AnonyReply is an anonymous messaging app that allows users to send and receive replies without revealing their identity. Simply search for a username and start a conversation—no sign-ups, no names, just pure interaction. Built with Next.js, this project is designed to explore and enhance my skills in modern web development while providing a unique and fun way to communicate.
         Let me know if you want any refinements! 🚀</h2>
         <Link href="/sign-up" className="bg-black p-4 rounded text-lg font-sans mx-20 my-4 text-white"> Signup</Link>
+        <Link href="/sign-in" className="bg-black p-4 rounded text-lg font-sans mx-20 my-4 text-white"> SignIn</Link>
+
     </div>
   );
 }
