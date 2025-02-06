@@ -90,62 +90,67 @@ const page = () => {
   }, [username])
 
   return (
-    <div className="lg:mx-20 mx-4 my-20 lg:p-20 p-4 border boder-zinc-400">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xl text-zinc-600 font-mono">Username</FormLabel>
-                <FormControl>
-                  <Input className="p-4" {...field} onChange={(e) => {
-                    field.onChange(e.target.value);
-                    debouncedUsername(e.target.value)
-                  }} />
-                </FormControl>
-                 <p>{usernameMessage}</p> 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* //email */}
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input className="shadow0lg shadow0zinc-600/50" placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* //password */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <button onClick={() => {
-            checkUsernameUnique()
-          }}>Check username</button>
-          <p>message :- {usernameMessage}</p>
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+    <div className="flex">
+      <div className="w-1/2 hidden lg:block border-r min-h-screen border-zinc-800 ">
+        <p className="text-3xl mt-40 font-sans text-zinc-500 mx-28 p-4">Please sign up to get started</p>
+        <p className=" p-4 rounded lg:text-xl text-lg lg:mx-28  mx-8 text-zinc-400 m-auto font-sans lg:my-4 my-4">"AnonyReply – Connect Without Boundaries!"
+        AnonyReply is an anonymous messaging app that allows users to send and receive replies without revealing their identity. Simply search for a username and start a conversation—no sign-ups, no names, just pure interaction. Built with Next.js, this project is designed to explore and enhance my skills in modern web development while providing a unique and fun way to communicate.
+        Let me know if you want any refinements! 🚀</p>
+      </div>
+      <div className="lg:mx-20 mx-8 my-20 lg:p-20 p-8 lg:w-1/2 w-full">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl text-zinc-600 font-sans">Username</FormLabel>
+                  <FormControl>
+                    <Input className="p-4 bg-black border border-zinc-700 text-white" {...field} onChange={(e) => {
+                      field.onChange(e.target.value);
+                      debouncedUsername(e.target.value)
+                    }} />
+                  </FormControl>
+                  <p className="text-white">{usernameMessage}</p>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* //email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-zinc-600 font-sans">Email</FormLabel>
+                  <FormControl>
+                    <Input className="shadow-lg shadow-zinc-600/50 p-4 bg-black border border-zinc-700 text-white" placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* //password */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-zinc-600 font-sans">Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="shadcn" className="p-4 bg-black border border-zinc-700 text-white" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      </div>
     </div>
+
   )
 }
 

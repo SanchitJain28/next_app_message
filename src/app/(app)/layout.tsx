@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AuthProvider from "@/context/AuthProvider";
-import { Toaster } from "@/components/ui/toaster"
-import './globals.css'
+import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/ui/navbar";
-import { Authentication } from "@/context/Authentication";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,11 +25,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <Authentication>
-        {children}
-        <Toaster />
-      </Authentication>
-    </body>
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>
+          <Navbar />
+          {children}
+          <Toaster />
+        </AuthProvider>
+      </body>
+    </html>
   );
 }

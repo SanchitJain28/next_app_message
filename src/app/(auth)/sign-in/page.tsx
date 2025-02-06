@@ -26,17 +26,17 @@ const page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
-  const { data: session, status } = useSession()
-
   const handleSubmit = async (data: z.infer<typeof signInSchemma>) => {
     console.log(data)
     try {
       //the problem was of id ,you have to add 'sign-In' as same id in the server side credentials provider 
       const response = await axios.post('/api/signIn', data)
       console.log(response.data)
+      localStorage.setItem("loginToken", response.data.token)
+      localStorage.setItem("loginDetails", JSON.stringify(response.data.user))
     } catch (error) {
-      const axiosError=error as AxiosError<ApiResponse>
-      let errorMessage=axiosError.response?.data.message ?? "Unexpected error occured"
+      const axiosError = error as AxiosError<ApiResponse>
+      let errorMessage = axiosError.response?.data.message ?? "Unexpected error occured"
       toast({
         title: "An error occurred",
         description: errorMessage,
@@ -57,42 +57,50 @@ const page = () => {
 
 
   return (
-    <div className="lg:mx-20 mx-4 my-20 lg:p-20 p-4 border boder-zinc-400">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="user_identifier"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input className="shadow-lg shadow-zinc-600/50" placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>password</FormLabel>
-                <FormControl>
-                  <Input className="shadow0lg shadow0zinc-600/50" placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <div className="flex">
+      <div className="w-1/2 hidden lg:block border-r min-h-screen border-zinc-800 ">
+        <p className="text-3xl mt-40 font-sans text-zinc-500 mx-28 p-4">Please sign In to get started</p>
+        <p className=" p-4 rounded lg:text-xl text-lg lg:mx-28  mx-8 text-zinc-400 m-auto font-sans lg:my-4 my-4">"AnonyReply – Connect Without Boundaries!"
+          AnonyReply is an anonymous messaging app that allows users to send and receive replies without revealing their identity. Simply search for a username and start a conversation—no sign-ups, no names, just pure interaction. Built with Next.js, this project is designed to explore and enhance my skills in modern web development while providing a unique and fun way to communicate.
+          Let me know if you want any refinements! 🚀</p>
+      </div>
+      <div className="lg:mx-20 mx-4 my-20 lg:p-20 p-4 lg:w-1/2 w-full">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="user_identifier"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl text-zinc-600 font-sans">Email</FormLabel>
+                  <FormControl>
+                    <Input className="w-full p-4 bg-black border border-zinc-700 text-white" placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xl text-zinc-600 font-sans">password</FormLabel>
+                  <FormControl>
+                    <Input className="p-4 bg-black border border-zinc-700 text-white" placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
 
-          <Button type="submit" onClick={(e) => {
+            <Button type="submit" onClick={(e) => {
 
-          }}>Submit</Button>
-        </form>
-      </Form>
+            }}>Submit</Button>
+          </form>
+        </Form>
+      </div>
     </div>
   )
 }

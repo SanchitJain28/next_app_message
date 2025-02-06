@@ -11,7 +11,6 @@ export async function POST(request: Request) {
       const alg = 'HS256'
     const { user_identifier, password } = await request.json()
     await dbConnect()
-    console.log(user_identifier,password)
     try {
         const user = await UserModel.findOne({
             $or: [
@@ -49,7 +48,12 @@ export async function POST(request: Request) {
         return Response.json({
             success: "true",
             message: "Login Successful",
-            token: userToken
+            token: userToken,
+            user:{
+                username:user.username,
+                email:user.email,
+                isAccepting:user.isAcceptingMessage
+            }
         }, { status: 201 })
     } catch (error: any) {
         console.log("Unexpected error occured", error)
