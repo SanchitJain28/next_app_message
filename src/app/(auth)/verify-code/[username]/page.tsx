@@ -21,7 +21,7 @@ import {
   import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
 
-export default function page() {
+export default function VerifyCode() {
     const [isSubmitting, setIsSubmitting] = useState(false)  
     const [code,setCode]=useState("")
     const {toast}=useToast()

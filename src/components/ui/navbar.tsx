@@ -15,11 +15,10 @@ import Link from 'next/link';
 import { authContext } from '@/context/Authentication';
 export default function navbar() {
     const {loginDetails,setLoginDetails,checkDetials}=useContext<any>(authContext)
-    useEffect(() => {checkDetials()}, [])
-
+    useEffect(() => {checkDetials(localStorage.getItem("loginToken"))}, [])
     return (
         <>
-            {loginDetails.success ? <>
+            {loginDetails ? <>
                 <div className="bg-black p-4 mx-8 my-2 rounded flex justify-between border border-zinc-600">
                     <p className='text-white lg:text-lg'>Welcome {loginDetails.data.username}</p>
                     <Link href="/dashboard" className='text-white lg:text-lg'>Dashboard</Link>

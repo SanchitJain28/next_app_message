@@ -27,11 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <Authentication>
-        {children}
-        <Toaster />
-      </Authentication>
-    </body>
+    <html>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Authentication>
+          {/* Your application's main content */}
+          {children}
+          <Toaster />
+        </Authentication>
+      </body>
+    </html>
   );
 }

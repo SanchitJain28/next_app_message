@@ -35,7 +35,7 @@ export async function POST(request: Request) {
             return Response.json({
                 success: "false",
                 message: "Invalid login credentials"
-            }, { status: 404 })
+            }, { status: 401 })
         }
         // let Usertoken = jwt.sign({
         //     user_id: user._id,

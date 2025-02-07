@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-const page = () => {
+const SignUp = () => {
   const { toast } = useToast()
   const [username, setUsername] = useState("")
   const [usernameMessage, setUserNameMessage] = useState("")
@@ -154,4 +154,4 @@ const page = () => {
   )
 }
 
-export default page
+export default SignUp

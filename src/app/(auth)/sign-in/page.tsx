@@ -21,7 +21,7 @@ import { useToast } from "@/hooks/use-toast"
 import axios, { AxiosError } from "axios"
 import ApiResponse from "@/types/apiResponse"
 
-const page = () => {
+const SignIn = () => {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
@@ -34,8 +34,15 @@ const page = () => {
       console.log(response.data)
       localStorage.setItem("loginToken", response.data.token)
       localStorage.setItem("loginDetails", JSON.stringify(response.data.user))
+      router.replace(`/dashboard`)
+      toast({
+        title: "Login",
+        description: "Login successfully",
+      });
+
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
+      console.log(axiosError)
       let errorMessage = axiosError.response?.data.message ?? "Unexpected error occured"
       toast({
         title: "An error occurred",
@@ -105,4 +112,4 @@ const page = () => {
   )
 }
 
-export default page
+export default SignIn

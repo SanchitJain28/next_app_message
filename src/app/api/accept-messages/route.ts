@@ -22,6 +22,7 @@ export async function POST(request: Request) {
 
     //gets the acceptingMessage from the body of the request
     const { acceptingMessage } = await request.json()
+    console.log(acceptingMessage)
     try {
         const { payload } = await jose.jwtVerify(authHeader, secret)
         if(!payload){
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
         return Response.json({
             success: true,
             message: "Status updated",
+            isAcceptingMessage:acceptingMessage,
             findUserByID
         }, { status: 201 })
     } catch (error) {
