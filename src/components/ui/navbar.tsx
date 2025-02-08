@@ -20,7 +20,7 @@ export default function navbar() {
         <>
             {loginDetails ? <>
                 <div className="bg-black p-4 mx-8 my-2 rounded flex justify-between border border-zinc-600">
-                    <p className='text-white lg:text-lg'>Welcome {loginDetails.data.username}</p>
+                    <p className='text-white lg:text-lg'>Welcome {loginDetails.username}</p>
                     <Link href="/dashboard" className='text-white lg:text-lg'>Dashboard</Link>
                 </div>
             </> : <>

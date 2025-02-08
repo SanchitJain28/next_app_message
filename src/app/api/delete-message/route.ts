@@ -1,12 +1,9 @@
 import dbConnect from "@/lib/dbConnect"
 import UserModel from "@/model/User"
-import { User } from "lucide-react"
-import { use } from "react"
-
 
 export async function DELETE(request: Request) {
+    await dbConnect()
     const { id, username } = await request.json()
-
     try {
         const user = await UserModel.findOneAndUpdate(
             { username },

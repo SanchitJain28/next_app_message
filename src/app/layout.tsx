@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AuthProvider from "@/context/AuthProvider";
-import { Toaster } from "@/components/ui/toaster"
-import './globals.css'
+import { Toaster } from "@/components/ui/toaster";
+import './globals.css';
 import Navbar from "@/components/ui/navbar";
 import { Authentication } from "@/context/Authentication";
 
@@ -27,12 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html>
+    <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Message app</title>
+        <meta name="description"  />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Authentication>
+          {/* <Navbar/> */}
           {/* Your application's main content */}
           {children}
-          <Toaster />
+          <Toaster/>
         </Authentication>
       </body>
     </html>

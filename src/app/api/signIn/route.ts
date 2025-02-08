@@ -1,7 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from 'bcryptjs'
-import JWT from 'jsonwebtoken'
 import * as jose from 'jose'
 
 export async function POST(request: Request) {
