@@ -22,6 +22,7 @@ export async function GET(request: Request) {
         if (!payload) {
             throw new Error("error")
         }
+        console.log(payload)
         const userIdUnfiltered = payload.user_id
         const userId = new mongoose.Types.ObjectId(userIdUnfiltered as string)
         console.log(userId)
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
             { $group: { _id: '$_id', messages: { $push: '$messages' } } }
         ])
         console.log(user)
-        if (!user || user.length === 0) {
+        if (!user || user.length==0) {
             return Response.json({
                 success: false,
                 message: "User not found,Please log in"

@@ -56,8 +56,9 @@ const SignUp = () => {
       })
       console.log(response)
       const { success } = response.data
+      
       //to capture data we have to make the folder in []  
-      router.replace(`verify-code/${username}`)
+      router.replace(`/sign-in`)
       setIsSubmitting(false)
     } catch (error) {
       console.log("error signing up the user")

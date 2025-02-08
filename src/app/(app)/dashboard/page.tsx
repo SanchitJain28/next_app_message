@@ -16,12 +16,19 @@ export default function Dashboard() {
   const form = useForm({ resolver: zodResolver(acceptMessageSchemma), })
   const { register, watch, setValue } = form
   const { toast } = useToast()
-
-  const { loginDetails, checkDetials, messages, setMessages } = useContext<any>(authContext)
+  const {  checkDetials, messages, setMessages } = useContext<any>(authContext)
+  const [loginDetails,setLoginDetails]=useState<any>(null)
+  console.log(loginDetails)
+  useEffect(() => { 
+    fetchMessages(),
+    fetchAcceptMessageStatus()
+    const storedData=localStorage.getItem("loginDetails")
+    setLoginDetails(storedData?JSON.parse(storedData):null)
+  }, [])
   const acceptMessages = watch("acceptMessages")
-  const profileURL = "https://websitename.pending/u/username"
+  const profileURL = `http://localhost:3000/u/${loginDetails?.username}`
 
-  useEffect(() => { fetchMessages(), fetchAcceptMessageStatus() }, [])
+
   const fetchMessages = async () => {
     try {
       const response = await axios.get("/api/get-messages", {
@@ -98,7 +105,7 @@ export default function Dashboard() {
     <div>
       <Navbar />
 
-      {loginDetails ? <div className="">
+      {loginDetails && loginDetails!==""? <div className="">
         {/* use items center to center elements in flex */}
         <div className=" rounded flex flex-row justify-between mx-8 my-4 items-center " id='isAcceptingMessage'>
           <div className=" lg:p-4 py-4 flex w-full border border-zinc-700 justify-between">

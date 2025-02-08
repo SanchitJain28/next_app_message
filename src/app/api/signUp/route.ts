@@ -57,30 +57,32 @@ export async function POST(request: Request) {
                 verifyCode: verifyCode,
                 verifyCodeExpiry: expiryDate,
                 isAcceptingMessage: true,
-                isVerified: false,
+                isVerified: true,
                 messages: []
             })
             await userData.save()
         }
         //after saving the user,it will send verification email
         //send verification email
-        const SendEmail = await sendVerificationEmail(
-            email,
-            username,
-            verifyCode
-        )
+        // We are currently disabling the email part of this app because we have to verify the domain and it is fucking paid process thus we are disabling,SOrry email better luck next time
+
+        // const SendEmail = await sendVerificationEmail(
+        //     email,
+        //     username,
+        //     verifyCode
+        // )
         //if email was not send succesfully,program will exit after giving a message
-        if (!SendEmail.success) {
-            return Response.json({
-                success: false,
-                message: "Verification email failed"
-            }, { status: 500 })
-        }
+        // We are currently disabling the email part of this app because we have to verify the domain and it is fucking paid process thus we are disabling,SOrry email better luck next time
+        // if (!SendEmail.success) {
+        //     return Response.json({
+        //         success: false,
+        //         message: "Verification email failed"
+        //     }, { status: 500 })
+        // }
         //FINALLY email verification is sent .PROGRAM WILL FINALLY TAKE EXIT
         return Response.json({
-            email: SendEmail,
             success: true,
-            message: "Registered Succesfully.Please verify your email"
+            message: "Registered Succesfully"
         }, { status: 201 })
     } catch (error) {
         console.error("Error signing up the user", error)

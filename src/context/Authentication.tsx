@@ -11,9 +11,9 @@ export function Authentication({ children }: { children: React.ReactNode }) {
   const [loginDetails, setLoginDetails] = useState<any>(null)
   const [messages,setMessages]=useState<[Message]|[]>([])
   useEffect(() => {
-    const loginDetails = JSON.parse(localStorage.getItem("loginDetails") ?? "")
+    // const loginDetails = JSON.parse(localStorage.getItem("loginDetails") ?? "")
     if (loginDetails && loginDetails !== "") {
-      setLoginDetails(loginDetails)
+      setLoginDetails("")
       checkDetials(localStorage.getItem("loginToken")?? "")
     }
     else {

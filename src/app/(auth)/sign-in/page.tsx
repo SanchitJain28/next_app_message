@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,16 +15,17 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { signIn, useSession } from "next-auth/react"
 import { signInSchemma } from "@/Schemmas/signInSchemma"
 import { useToast } from "@/hooks/use-toast"
 import axios, { AxiosError } from "axios"
 import ApiResponse from "@/types/apiResponse"
+import { authContext } from "@/context/Authentication"
 
 const SignIn = () => {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
+  const {loginDetails, setLoginDetails}=useContext<any>(authContext)
 
   const handleSubmit = async (data: z.infer<typeof signInSchemma>) => {
     console.log(data)
@@ -34,6 +35,7 @@ const SignIn = () => {
       console.log(response.data)
       localStorage.setItem("loginToken", response.data.token)
       localStorage.setItem("loginDetails", JSON.stringify(response.data.user))
+      setLoginDetails(response.data.user)
       router.replace(`/dashboard`)
       toast({
         title: "Login",

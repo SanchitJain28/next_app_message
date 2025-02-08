@@ -29,7 +29,7 @@ export  async function POST(request:Request){
             return Response.json({
                 success:false,
                 message: "Message cannot be sent as user is not accepting messages!!!"
-            }, { status: 404 })
+            }, { status: 402 })
             
         } catch (error) {
             console.log("Unexpected error occured",error)
