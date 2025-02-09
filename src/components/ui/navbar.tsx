@@ -14,8 +14,11 @@ import { useIsValidLogin } from '@/hooks/useIsLogin';
 import Link from 'next/link';
 import { authContext } from '@/context/Authentication';
 export default function navbar() {
-    const {loginDetails,setLoginDetails,checkDetials}=useContext<any>(authContext)
-    useEffect(() => {checkDetials(localStorage.getItem("loginToken"))}, [])
+    const[loginDetails,setLoginDetails]=useState<any>(null)
+    useEffect(() => { 
+        const storedData=localStorage.getItem("loginDetails")
+        setLoginDetails(storedData?JSON.parse(storedData):null)
+      }, [])
     return (
         <>
             {loginDetails ? <>
