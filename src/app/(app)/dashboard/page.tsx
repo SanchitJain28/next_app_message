@@ -140,7 +140,7 @@ export default function Dashboard() {
         <div className="grid lg:grid-cols-3 grid-cols-2 mx-4 ">
           {messages?.map((e, index: number) => {
             return <div key={index} className="mx-4 my-2">
-              <MessageCard data={e} />
+              <MessageCard content={e.content} createdAt={e.createdAt} _id={e._id as string} />
             </div>
           })}
         </div>

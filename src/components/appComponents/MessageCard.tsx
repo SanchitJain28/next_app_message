@@ -20,14 +20,12 @@ import axios, { AxiosError } from 'axios'
 import ApiResponse from '@/types/apiResponse'
 import { useToast } from '@/hooks/use-toast'
 interface MessageCardProps {
-    data: {
         content: string,
         createdAt: Date,
-        _id: string
-    }
+        _id: string 
 }
 //what this shit do it it takes a object as an argiment and extract content,createdAt and _id from the object
-export default function MessageCard({data:{ content, createdAt, _id }}: MessageCardProps) {
+export default function MessageCard({ content, createdAt, _id }: MessageCardProps) {
     const { toast } = useToast()
     const authContextValue = useContext(authContext)
     if (!authContextValue) {
