@@ -10,6 +10,11 @@ import { Switch } from "@/components/ui/switch"
 import ApiResponse from '@/types/apiResponse'
 import { useToast } from '@/hooks/use-toast'
 import Navbar from '@/components/ui/navbar'
+export interface Message {
+  content: string;
+  createdAt: Date;
+  _id: string;
+}
 //MAN THERE IS FUCKING DIFFERENCE BETWEENN || and ?? || this will always assign true to a value ,?? this only gives true when the other one is false
 export default function Dashboard() {
   const form = useForm({ resolver: zodResolver(acceptMessageSchemma), })
