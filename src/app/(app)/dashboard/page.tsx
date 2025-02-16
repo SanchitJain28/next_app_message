@@ -97,7 +97,7 @@ export default function Dashboard() {
     fetchAcceptMessageStatus();
   },[])
   const acceptMessages = watch("acceptMessages")
-  const profileURL = `http://localhost:3000/u/${loginDetails?.username}`
+  const profileURL = `https://beanonymous.vercel.app/u/${loginDetails?.username}`
 
 
 
