@@ -93,7 +93,7 @@ const SignUp = () => {
     <div className="flex">
       <div className="w-1/2 hidden lg:block border-r min-h-screen border-zinc-800 ">
         <p className="text-3xl mt-40 font-sans text-zinc-500 mx-28 p-4">Please sign up to get started</p>
-        <p className=" p-4 rounded lg:text-xl text-lg lg:mx-28  mx-8 text-zinc-400 m-auto font-sans lg:my-4 my-4">"AnonyReply – Connect Without Boundaries!"
+        <p className=" p-4 rounded lg:text-xl text-lg lg:mx-28  mx-8 text-zinc-400 m-auto font-sans lg:my-4 my-4">&quot;AnonyReply – Connect Without Boundaries!&quot;
         AnonyReply is an anonymous messaging app that allows users to send and receive replies without revealing their identity. Simply search for a username and start a conversation—no sign-ups, no names, just pure interaction. Built with Next.js, this project is designed to explore and enhance my skills in modern web development while providing a unique and fun way to communicate.
         Let me know if you want any refinements! 🚀</p>
       </div>
