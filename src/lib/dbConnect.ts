@@ -5,7 +5,7 @@ type ConnectionObject = {
     isConnected?: number
 }
 //initialized connection variable
-let connection: ConnectionObject = {}
+const connection: ConnectionObject = {}
 
 export default async function dbConnect(): Promise<void> {
     if (connection.isConnected) {

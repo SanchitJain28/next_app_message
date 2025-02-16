@@ -4,7 +4,6 @@ import React from 'react'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,7 +17,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import axios, { AxiosError } from 'axios'
 import { useToast } from '@/hooks/use-toast'
-import { headers } from 'next/headers'
 import CarouselApp from '@/components/appComponents/CarouselApp'
 
 
@@ -71,7 +69,7 @@ export default function SendMessage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" onClick={(e) => {
+            <Button type="submit" onClick={() => {
             }} className='bg-white text-black p-4'>Submit</Button>
           </form>
         </Form>

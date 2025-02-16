@@ -4,31 +4,19 @@ import { authContext } from '@/context/Authentication'
 import { acceptMessageSchemma } from '@/Schemmas/acceptMessageSchemma'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Switch } from "@/components/ui/switch"
 import ApiResponse from '@/types/apiResponse'
 import { useToast } from '@/hooks/use-toast'
 import Navbar from '@/components/ui/navbar'
-
 //MAN THERE IS FUCKING DIFFERENCE BETWEENN || and ?? || this will always assign true to a value ,?? this only gives true when the other one is false
 export default function Dashboard() {
   const form = useForm({ resolver: zodResolver(acceptMessageSchemma), })
   const { register, watch, setValue } = form
   const { toast } = useToast()
-  const {  checkDetials, messages, setMessages } = useContext<any>(authContext)
-  const [loginDetails,setLoginDetails]=useState<any>(null)
-  console.log(loginDetails)
-  useEffect(() => { 
-    fetchMessages(),
-    fetchAcceptMessageStatus()
-    const storedData=localStorage.getItem("loginDetails")
-    setLoginDetails(storedData?JSON.parse(storedData):null)
-  }, [])
-  const acceptMessages = watch("acceptMessages")
-  const profileURL = `http://localhost:3000/u/${loginDetails?.username}`
-
-
+  const authContextData = useContext(authContext)
+  const { messages, setMessages, loginDetails} = authContextData ||{}
   const fetchMessages = async () => {
     try {
       const response = await axios.get("/api/get-messages", {
@@ -36,7 +24,7 @@ export default function Dashboard() {
           "Authorization": localStorage.getItem("loginToken")
         }
       })
-      setMessages(response.data.message)
+      setMessages?.(response.data.message)
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       console.log(axiosError)
@@ -64,14 +52,14 @@ export default function Dashboard() {
       const axiosError = error as AxiosError<ApiResponse>
       toast({
         title: "error",
-        description: "error getting the status"
+        description: axiosError.response?.data.message
       })
     }
     finally {
 
     }
 
-  }, [setValue])
+  }, [])
   const handleAcceptMessageStatus = async () => {
     try {
       const response = await axios.post<ApiResponse>("/api/accept-messages", {
@@ -94,10 +82,19 @@ export default function Dashboard() {
       const axiosError = error as AxiosError<ApiResponse>
       toast({
         title: "error",
-        description: "error getting the status"
+        description: axiosError.response?.data.message
       })
     }
   }
+
+  useEffect(() => {
+    fetchMessages();
+    fetchAcceptMessageStatus();
+  },[])
+  const acceptMessages = watch("acceptMessages")
+  const profileURL = `http://localhost:3000/u/${loginDetails?.username}`
+
+
 
 
   return (
@@ -105,7 +102,7 @@ export default function Dashboard() {
     <div>
       <Navbar />
 
-      {loginDetails && loginDetails!==""? <div className="">
+      {loginDetails ? <div className="">
         {/* use items center to center elements in flex */}
         <div className=" rounded flex flex-row justify-between mx-8 my-4 items-center " id='isAcceptingMessage'>
           <div className=" lg:p-4 py-4 flex w-full border border-zinc-700 justify-between">
@@ -136,7 +133,7 @@ export default function Dashboard() {
           }}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></button>
         </div>
         <div className="grid lg:grid-cols-3 grid-cols-2 mx-4 ">
-          {messages.map((e: any, index: any) => {
+          {messages?.map((e, index: number) => {
             return <div key={index} className="mx-4 my-2">
               <MessageCard data={e} />
             </div>

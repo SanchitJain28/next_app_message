@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDebounceCallback } from 'usehooks-ts'
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,8 +28,7 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const debouncedUsername = useDebounceCallback(setUsername, 500)
   const router = useRouter()
-
-  const checkUsernameUnique = async () => {
+  const checkUsernameUnique=useCallback(async () => {
     try {
       setIsCheckingUsername(true)
       setUserNameMessage("")
@@ -44,10 +42,12 @@ const SignUp = () => {
     finally {
       setIsCheckingUsername(false)
     }
-  }
+  },[username])
+
 
   const handleSubmit = async (data: z.infer<typeof signUpSchemma>) => {
     setIsSubmitting(true)
+    
     try {
       const response = await axios.post<ApiResponse>("http://localhost:3000/api/signUp", data)
       toast({
@@ -55,7 +55,6 @@ const SignUp = () => {
         description: response.data.message
       })
       console.log(response)
-      const { success } = response.data
       
       //to capture data we have to make the folder in []  
       router.replace(`/sign-in`)
@@ -63,7 +62,7 @@ const SignUp = () => {
     } catch (error) {
       console.log("error signing up the user")
       const axiosError = error as AxiosError<ApiResponse>
-      let errorMessage = axiosError.response?.data.message ?? "Error signing up the user"
+      const errorMessage = axiosError.response?.data.message ?? "Error signing up the user"
       toast({
         title: "false",
         description: errorMessage,
@@ -88,7 +87,7 @@ const SignUp = () => {
   useEffect(() => {
     console.log(username)
     checkUsernameUnique()
-  }, [username])
+  }, [username,checkUsernameUnique])
 
   return (
     <div className="flex">
@@ -113,7 +112,7 @@ const SignUp = () => {
                       debouncedUsername(e.target.value)
                     }} />
                   </FormControl>
-                  <p className="text-white">{usernameMessage}</p>
+                  <p className="text-white">{isCheckingUsername?"loading":usernameMessage}</p>
                   <FormMessage />
                 </FormItem>
               )}
@@ -146,7 +145,7 @@ const SignUp = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isSubmitting}>Submit</Button>
           </form>
         </Form>
       </div>

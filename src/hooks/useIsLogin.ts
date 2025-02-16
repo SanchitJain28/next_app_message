@@ -12,7 +12,8 @@ export async function useIsValidLogin(token: string) {
         const { payload } = await jose.jwtVerify(token, secret)
         return {
             success:true,
-            data:JSON.parse(localStorage.getItem("loginDetails")|| "")
+            data:JSON.parse(localStorage.getItem("loginDetails")|| ""),
+            messsage:payload
         }
     } catch (error) {
         if (error instanceof jose.errors.JWTExpired) { // Check for JWT expiration specifically

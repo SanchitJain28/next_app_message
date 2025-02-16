@@ -2,10 +2,7 @@ import React, { useContext } from 'react'
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
 import {
     AlertDialog,
@@ -22,14 +19,26 @@ import { authContext } from '@/context/Authentication'
 import axios, { AxiosError } from 'axios'
 import ApiResponse from '@/types/apiResponse'
 import { useToast } from '@/hooks/use-toast'
-export default function MessageCard({ data }: any) {
+interface MessageCardProps {
+    data: {
+        content: string,
+        createdAt: Date,
+        _id: string
+    }
+}
+//what this shit do it it takes a object as an argiment and extract content,createdAt and _id from the object
+export default function MessageCard({data:{ content, createdAt, _id }}: MessageCardProps) {
     const { toast } = useToast()
-    const { loginDetails, setMessages, messages } = useContext<any>(authContext)
+    const authContextValue = useContext(authContext)
+    if (!authContextValue) {
+        return null
+    }
+    const { loginDetails, setMessages, messages } = authContextValue
     const deleteMessage = async (messageId: string) => {
         try {
             const response = await axios.delete("/api/delete-message", {
                 data: {
-                    username: loginDetails.username,
+                    username: loginDetails?.username,
                     id: messageId
                 }
             })
@@ -51,14 +60,14 @@ export default function MessageCard({ data }: any) {
     return (
         <Card className='bg-black text-white  border border-zinc-700 flex flex-col justify-between '>
             <CardContent className='p-4 lg:pb-8'>
-                <p className='text-zinc-400'>{data.content}</p>
+                <p className='text-zinc-400'>{content}</p>
             </CardContent>
             <CardFooter className='p-4 lg:p-4'>
-                <p className='text-zinc-700 text-sm'>{new Date(data.createdAt).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+                <p className='text-zinc-700 text-sm'>{new Date(createdAt).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
             </CardFooter>
             <div className=" px-4 py-4">
                 <AlertDialog >
-                    <AlertDialogTrigger><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f00000" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></AlertDialogTrigger>
+                    <AlertDialogTrigger><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f00000" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg></AlertDialogTrigger>
                     <AlertDialogContent className='bg-white'>
                         <AlertDialogHeader>
                             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -68,12 +77,14 @@ export default function MessageCard({ data }: any) {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction onClick={()=>{
-                                deleteMessage(data._id)
-                                const filteredMessages = messages.filter((e: any) => {
-                                    return e._id !== data._id
+                            <AlertDialogAction onClick={() => {
+                                deleteMessage(_id as string)
+                                const filteredMessages = messages?.filter((e) => {
+                                    return e._id !== _id
                                 })
-                                setMessages(filteredMessages)
+                                if (setMessages && filteredMessages) {
+                                    setMessages(filteredMessages)
+                                }
                             }}>Continue</AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>

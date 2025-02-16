@@ -40,7 +40,7 @@ export async function POST(request: Request) {
         //     user_id: user._id,
         //     username: user.username
         // }, 'SECRET');
-        let userToken=await new jose.SignJWT({
+        const userToken=await new jose.SignJWT({
                  user_id: user._id,
                  username: user.username
              }).setProtectedHeader({alg}).setExpirationTime("24hr").sign(secret)
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
                 isAccepting:user.isAcceptingMessage
             }
         }, { status: 201 })
-    } catch (error: any) {
+    } catch (error) {
         console.log("Unexpected error occured", error)
         return Response.json({
             success: "false",

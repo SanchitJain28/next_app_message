@@ -1,18 +1,17 @@
 "use client"
-import { Toast } from '@/components/ui/toast';
 import { useToast } from "@/hooks/use-toast"
 import { verifySchemma } from '@/Schemmas/verifySchemma';
 import ApiResponse from '@/types/apiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import { useParams, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from "zod";
 import {
     Form,
     FormControl,
-    FormDescription,
+
     FormField,
     FormItem,
     FormLabel,
@@ -22,8 +21,8 @@ import {
 import { Button } from '@/components/ui/button';
 
 export default function VerifyCode() {
-    const [isSubmitting, setIsSubmitting] = useState(false)  
-    const [code,setCode]=useState("")
+    // const [isSubmitting, setIsSubmitting] = useState(false)  
+    // const [code,setCode]=useState("")
     const {toast}=useToast()
     const router=useRouter()
     const { username } = useParams()
@@ -32,7 +31,7 @@ export default function VerifyCode() {
     })
     const onSubmit=async(data: z.infer<typeof verifySchemma>)=>{
         console.log(username)
-        setIsSubmitting(true)
+        // setIsSubmitting(true)
         console.log(data.code)
         try {
             const response=await axios.post("/api/verify-code",{
@@ -50,7 +49,7 @@ export default function VerifyCode() {
             console.log("error getting verification code")
             console.log(error)
                   const axiosError = error as AxiosError<ApiResponse>
-                  let errorMessage = axiosError.response?.data.message ?? "Error getting verification the user"
+                  const errorMessage = axiosError.response?.data.message ?? "Error getting verification the user"
                   toast({
                     title: "false",
                     description: errorMessage,
@@ -58,7 +57,7 @@ export default function VerifyCode() {
                   })
         }
         finally{
-            setIsSubmitting(false)
+            // setIsSubmitting(false)
         }
     }
     return (

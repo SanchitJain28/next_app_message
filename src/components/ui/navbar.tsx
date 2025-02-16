@@ -1,20 +1,12 @@
 "use client"
 
-import React, { useContext, useEffect, useState } from 'react'
-import {
-    Menubar,
-    MenubarContent,
-    MenubarItem,
-    MenubarMenu,
-    MenubarSeparator,
-    MenubarShortcut,
-    MenubarTrigger,
-} from "@/components/ui/menubar"
-import { useIsValidLogin } from '@/hooks/useIsLogin';
+import React, { useEffect, useState } from 'react'
+
+
 import Link from 'next/link';
-import { authContext } from '@/context/Authentication';
-export default function navbar() {
-    const[loginDetails,setLoginDetails]=useState<any>(null)
+import { loginDetails } from '@/context/Authentication';
+export default function Navbar() {
+    const[loginDetails,setLoginDetails]=useState<loginDetails|null>(null)
     useEffect(() => { 
         const storedData=localStorage.getItem("loginDetails")
         setLoginDetails(storedData?JSON.parse(storedData):null)

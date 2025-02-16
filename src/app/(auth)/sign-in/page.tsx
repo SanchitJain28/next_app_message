@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,11 +22,16 @@ import { authContext } from "@/context/Authentication"
 
 const SignIn = () => {
   const { toast } = useToast()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const router = useRouter()
-  const {loginDetails, setLoginDetails}=useContext<any>(authContext)
+  const authContextValue = useContext(authContext)
+  if (!authContextValue) {
+    throw new Error("authContextValue is null")
+  }
+  const { setLoginDetails } = authContextValue || {}
 
   const handleSubmit = async (data: z.infer<typeof signInSchemma>) => {
+    setIsSubmitting(true)
     console.log(data)
     try {
       //the problem was of id ,you have to add 'sign-In' as same id in the server side credentials provider 
@@ -35,7 +39,7 @@ const SignIn = () => {
       console.log(response.data)
       localStorage.setItem("loginToken", response.data.token)
       localStorage.setItem("loginDetails", JSON.stringify(response.data.user))
-      setLoginDetails(response.data.user)
+      setLoginDetails?.(response.data.user)
       router.replace(`/dashboard`)
       toast({
         title: "Login",
@@ -45,7 +49,7 @@ const SignIn = () => {
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>
       console.log(axiosError)
-      let errorMessage = axiosError.response?.data.message ?? "Unexpected error occured"
+      const errorMessage = axiosError.response?.data.message ?? "Unexpected error occured"
       toast({
         title: "An error occurred",
         description: errorMessage,
@@ -69,7 +73,7 @@ const SignIn = () => {
     <div className="flex">
       <div className="w-1/2 hidden lg:block border-r min-h-screen border-zinc-800 ">
         <p className="text-3xl mt-40 font-sans text-zinc-500 mx-28 p-4">Please sign In to get started</p>
-        <p className=" p-4 rounded lg:text-xl text-lg lg:mx-28  mx-8 text-zinc-400 m-auto font-sans lg:my-4 my-4">"AnonyReply – Connect Without Boundaries!"
+        <p className=" p-4 rounded lg:text-xl text-lg lg:mx-28  mx-8 text-zinc-400 m-auto font-sans lg:my-4 my-4">AnonyReply – Connect Without Boundaries!
           AnonyReply is an anonymous messaging app that allows users to send and receive replies without revealing their identity. Simply search for a username and start a conversation—no sign-ups, no names, just pure interaction. Built with Next.js, this project is designed to explore and enhance my skills in modern web development while providing a unique and fun way to communicate.
           Let me know if you want any refinements! 🚀</p>
       </div>
@@ -104,9 +108,7 @@ const SignIn = () => {
             />
 
 
-            <Button type="submit" onClick={(e) => {
-
-            }}>Submit</Button>
+            <Button type="submit" disabled={isSubmitting}>Submit</Button>
           </form>
         </Form>
       </div>
